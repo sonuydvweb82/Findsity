@@ -52,3 +52,6 @@ backend/verify-db.mjs
 backend/scripts/copy-schema.js
 backend/scripts/copy-schema.cjs
 backend/*.log
+
+# Unrelated project
+absolute-ascension/

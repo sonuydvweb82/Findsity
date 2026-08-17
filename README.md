@@ -1,71 +1,257 @@
-# Findsity — Campus Lost & Found Platform
+# Findsity
 
-**Lost it? Find it. Found it? Return it.** Findsity is a full-stack campus lost-and-found web app that takes a listing from *reported* to *returned* with automatic matching, secure ownership verification, and a transparent handover flow.
+### Campus Lost & Found, made simple.
 
-## Features
+Lost something on campus? Found something that isn't yours?
 
-- **Report items** — lost or found, with category, brand/model/color, location, photos (multipart upload, up to 6), optional reward, and (for found items) private identifying features visible only to finder + admins.
-- **Smart matching** — background token/Jaccard similarity matching between lost & found items (threshold 55). Possible matches appear on the lost item detail page; match notifications are pushed to both users.
-- **Claims & verification** — claimants answer seeded verification questions plus free-form proof fields; each claim gets an auto-computed **risk label** (high risk → admin review required). Finders can approve, reject, or request more info; claims auto-escalate when a finder rejects and the claimant disputes.
-- **Handover flow** — finder arranges pickup (location/date/time/notes), both sides confirm; item status moves `return_pending → returned`.
-- **Admin console** — stats dashboard, charts (lost vs found, returns over time, categories, claim funnel), user suspension, item removal, claim review, report resolution, audit log.
-- **Messaging & notifications** — per-item conversations with unread counts, in-app notifications for every event.
-- **Auth & profile** — register/login (JWT), forgot/reset password (dev reset link in dev mode), avatar upload, bio.
-- **Security** — bcrypt password hashing, rate limiting, helmet, CORS, zod validation, masked student IDs in public listings, ownership checks everywhere, soft deletes.
+Findsity is a full-stack platform that helps students report lost and found items, discover possible matches, verify ownership, chat with the other person, and safely complete the return.
 
-## Tech Stack
+Instead of searching through WhatsApp groups, college notices, or asking around, Findsity keeps the entire process in one place.
 
-- **Frontend:** React 19 + TypeScript + Vite, Tailwind CSS v4, React Router v6, lucide-react, react-hot-toast
-- **Backend:** Express + TypeScript (ESM), PGlite (embedded PostgreSQL) — set `DATABASE_URL` to use a real Postgres, multer, jsonwebtoken, zod
-- **Monorepo:** npm workspaces-free layout with `backend/` and `frontend/` folders and root scripts
+---
 
-## Quick Start
+## ✨ Features
 
-```bash
-npm install                 # root + backend + frontend
-npm run db:seed             # schema + seed (admin + demo students)
-npm run dev                 # backend :4000 + frontend :5173 (concurrently)
-```
+### 🔎 Report Lost & Found Items
 
-Then open http://localhost:5173.
+- Report an item as **Lost** or **Found**
+- Add category, brand, model, colour, description and location
+- Upload up to **6 photos** for an item
+- Add an optional reward for lost items
+- Found-item posts can include private identifying details
+- Private identifying details are visible only to the finder and admins
 
-### Demo accounts (password: `Password123`)
+### 🎯 Smart Item Matching
 
-| Role    | Email                |
-| ------- | -------------------- |
-| Admin   | admin@findsity.edu   |
-| Student | demo@findsity.edu    |
-| Student | aarav@campus.edu     |
-| Student | priya@campus.edu     |
-| Student | kabir@campus.edu     |
+Findsity automatically looks for possible matches between lost and found items.
 
-### Commands
+- Compares item names, categories and descriptions
+- Uses token/Jaccard similarity to find relevant matches
+- Possible matches are shown on the lost-item details page
+- Match notifications are sent to the relevant users
+- Matching uses a **55% similarity threshold**
 
-| Script              | What it does                                    |
-| ------------------- | ----------------------------------------------- |
-| `npm run dev`       | Runs backend + frontend dev servers             |
-| `npm run db:seed`   | Applies schema and seeds demo data              |
-| `npm run build:backend` | Type-checks the backend                      |
-| `npm run build:frontend` | Type-checks + production-builds the frontend |
-| `npm run start`     | Runs the built backend                          |
+### 🔐 Claims & Ownership Verification
 
-## Configuration
+Finding a similar item doesn't automatically prove ownership.
 
-Copy `.env.example` to `backend/.env` (or set env vars):
+The claim system allows users to provide additional information to prove that an item belongs to them.
 
-- `PORT` — backend port (default `4000`)
-- `DATABASE_URL` — Postgres connection string (optional; embedded PGlite used otherwise, data in `backend/data/`)
-- `JWT_SECRET` — sign JWT tokens (dev fallback provided)
-- `CLOUDINARY_URL` / `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET` — optional; without them, uploads are stored locally under `backend/uploads/`
-- `FRONTEND_URL` — CORS origin (default `http://localhost:5173`)
+- Submit an ownership claim
+- Answer verification questions
+- Provide additional proof/details
+- Automatic claim risk assessment
+- High-risk claims can require admin review
+- Finder can approve, reject or request more information
+- Disputed rejected claims can be escalated for further review
 
-## API Overview (under `/api`)
+### 🤝 Handover & Return Flow
 
-- `POST /auth/register|login`, `GET /auth/me`, `PUT /auth/profile`, `POST /auth/forgot-password`, `POST /auth/reset-password`
-- `GET|POST /items`, `GET /items/:id`, `PUT|DELETE /items/:id`, `GET /items/:id/matches`, `POST /items/:id/claims`
-- `GET /claims/mine|finder`, `GET /claims/:id`, `POST /claims/:id/approve|reject|request-info|escalate`, `POST /claims/:id/handover`, `POST /claims/:id/handover/finder-confirm|claimant-confirm`
-- `GET|POST /conversations`, `GET /conversations/:id[/messages]`, `POST /conversations/:id/messages`, `GET /conversations/unread-count`
-- `GET /notifications`, `POST /reports`
-- `GET /admin/stats|charts|users|items|claims|reports|actions`, `PATCH /admin/users/:id/status`, `DELETE /admin/items/:id`, `POST /admin/claims/:id/review`, `POST /admin/reports/:id/resolve`
+Findsity separates **claim approval** from the actual physical return.
 
-An end-to-end journey test lives at `frontend/e2e-journey.ps1` (runs the whole flow against the dev stack via the Vite proxy).
+```text
+Claim Approved
+      ↓
+Handover Arranged
+      ↓
+Location + Date + Time + Notes
+      ↓
+Finder & Claimant Confirm
+      ↓
+Item Handed Over
+      ↓
+
+The item moves from return_pending to returned only after the required confirmations are completed.
+
+💬 Messaging & Notifications
+Private conversations between users
+Item-based conversations
+Unread message counts
+In-app notifications
+Updates for claims, messages and handovers
+Users can communicate before arranging a return
+👤 Authentication & Profiles
+User registration and login
+JWT-based authentication
+Forgot password and reset password flow
+Profile avatar upload
+User bio
+Public user profiles
+Protected account features
+🛡️ Admin Console
+
+The admin dashboard provides tools to manage the platform.
+
+Dashboard statistics
+Lost vs Found analytics
+Return activity
+Category statistics
+Claim funnel
+User management
+User suspension
+Item removal
+Claim review
+Report resolution
+Audit information
+🔒 Security & Privacy
+
+Findsity includes several security and privacy measures:
+
+bcrypt password hashing
+JWT authentication
+Rate limiting
+Helmet security headers
+CORS configuration
+Zod request validation
+Authorization checks
+Ownership checks
+Protected conversations
+Masked student IDs in public listings
+Soft deletes
+Private claim information
+
+🔄 How It Works
+
+The complete Findsity flow is simple:
+Lost / Found Item
+       ↓
+Possible Match
+       ↓
+Message
+       ↓
+Claim
+       ↓
+Verification
+       ↓
+Claim Approved
+       ↓
+Handover
+       ↓
+Both Confirm
+       ↓
+Returned ✅
+
+The goal is to make the process clear from the moment an item is reported until it reaches its owner again.
+
+🧑‍💻 How to Use
+For someone who lost an item
+Create an account or log in.
+Report your item as Lost.
+Add useful details and photos.
+Check possible matches.
+Open a conversation if you find a likely match.
+Submit a claim when you believe the item is yours.
+Complete the ownership verification.
+Once approved, arrange a handover.
+Confirm the item after receiving it.
+For someone who found an item
+Create an account or log in.
+Report the item as Found.
+Add photos and item details.
+Keep unique identifying details private when appropriate.
+Review possible claims.
+Approve a legitimate claim or request more information.
+Arrange the handover.
+Confirm that the item has been handed over.
+For administrators
+
+Admins can access the admin dashboard to:
+
+Review claims
+Handle reports
+Manage users
+Remove inappropriate listings
+Suspend accounts
+Monitor platform activity
+Review high-risk or disputed claims
+🛠️ Technologies
+Frontend
+React 19
+TypeScript
+Vite
+Tailwind CSS v4
+React Router
+Lucide React
+React Hot Toast
+Backend
+Node.js
+Express
+TypeScript
+JWT
+bcrypt
+Zod
+Multer
+Database
+PGlite for local development
+PostgreSQL support through DATABASE_URL
+Development
+Git
+GitHub
+npm
+REST API architecture
+
+📁 Project Structure
+Findsity/
+│
+├── frontend/
+│   ├── public/
+│   │   └── demo-items/
+│   └── src/
+│       ├── components/
+│       ├── contexts/
+│       ├── pages/
+│       ├── services/
+│       ├── types/
+│       └── utils/
+│
+├── backend/
+│   ├── scripts/
+│   └── src/
+│       ├── config/
+│       ├── controllers/
+│       ├── database/
+│       ├── middleware/
+│       ├── routes/
+│       ├── services/
+│       ├── types/
+│       └── utils/
+│
+├── package.json
+├── package-lock.json
+├── .env.example
+├── .gitignore
+└── README.md
+
+📱 Responsive Design
+
+Findsity is designed to work across:
+
+📱 Mobile
+📲 Tablet
+💻 Desktop
+
+The interface adapts to different screen sizes while keeping the main workflows easy to use.
+
+🚀 Future Improvements
+
+Some ideas for future versions:
+
+🗺️ Campus map integration
+📧 College email verification
+🔔 Real-time notifications
+🤖 AI-assisted item matching
+🏫 Multi-campus support
+📊 Advanced analytics
+📱 Progressive Web App
+📲 Native mobile application
+
+👨‍💻 Author
+
+Sonu Kr Ydv
+
+B.Tech CSE student and developer interested in building practical software that solves everyday problems.
+
+Findsity was built as a project to make the campus lost-and-found process more organized, reliable and easier for students.
+Both Confirm Receipt
+      ↓
+Returned ✅

@@ -31,7 +31,8 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     headers.set('Content-Type', 'application/json');
   }
 
-  const res = await fetch(path, { ...options, headers });
+  const baseUrl = import.meta.env.VITE_API_URL || '';
+  const res = await fetch(`${baseUrl}${path}`, { ...options, headers });
   let data: unknown = null;
   try {
     data = await res.json();

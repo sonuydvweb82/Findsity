@@ -10,6 +10,7 @@ import Button from '../../components/ui/Button';
 import Modal from '../../components/ui/Modal';
 import { Select } from '../../components/ui/Input';
 import { formatDate } from '../../utils/format';
+import { resolveImageUrl } from '../../utils/image';
 
 export default function AdminItems() {
   const [items, setItems] = useState<Item[] | null>(null);
@@ -103,7 +104,7 @@ export default function AdminItems() {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       {item.cover_url ? (
-                        <img src={item.cover_url} alt="" className="size-10 rounded-lg object-cover" />
+                        <img src={resolveImageUrl(item.cover_url)} alt="" className="size-10 rounded-lg object-cover" />
                       ) : (
                         <div className="flex size-10 items-center justify-center rounded-lg bg-slate-100 text-slate-300 dark:bg-slate-800">
                           <PackageSearch className="size-4" />

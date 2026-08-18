@@ -24,6 +24,7 @@ import Modal from '../components/ui/Modal';
 import ClaimForm from '../components/claims/ClaimForm';
 import ItemImage from '../components/items/ItemImage';
 import { formatDate, titleCase } from '../utils/format';
+import { resolveImageUrl } from '../utils/image';
 
 export default function ItemDetails() {
   const { id } = useParams<{ id: string }>();
@@ -73,7 +74,11 @@ export default function ItemDetails() {
     );
   }
 
-  const images = item.images?.length ? item.images : item.cover_url ? [{ url: item.cover_url, position: 0 }] : [];
+  const images = item.images?.length
+    ? item.images.map((img) => ({ ...img, url: resolveImageUrl(img.url) ?? '' }))
+    : item.cover_url
+      ? [{ url: resolveImageUrl(item.cover_url) ?? '', position: 0 }]
+      : [];
   const isOwner = user && item.user_id === user.id;
   const canClaim = user && !isOwner && item.type === 'found' && (item.status === 'found' || item.status === 'return_pending');
 

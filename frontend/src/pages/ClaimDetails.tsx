@@ -24,6 +24,7 @@ import Button from '../components/ui/Button';
 import Modal from '../components/ui/Modal';
 import { Field, Input, Textarea } from '../components/ui/Input';
 import { formatDate, formatDateTime, timeAgo } from '../utils/format';
+import { resolveImageUrl } from '../utils/image';
 
 export default function ClaimDetails() {
   const { id } = useParams<{ id: string }>();
@@ -464,7 +465,7 @@ export default function ClaimDetails() {
           {/* Item info */}
           <Link to={`/items/${claim.item_id}`} className="card flex items-center gap-4 p-4 transition hover:shadow-md">
             {claim.item_cover ? (
-              <img src={claim.item_cover} alt="" className="size-14 rounded-lg object-cover" />
+              <img src={resolveImageUrl(claim.item_cover)} alt="" className="size-14 rounded-lg object-cover" />
             ) : (
               <div className="flex size-14 items-center justify-center rounded-lg bg-slate-100 text-slate-300 dark:bg-slate-800">
                 <HelpCircle className="size-6" />

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ImageIcon } from 'lucide-react';
 import { cn } from '../../utils/format';
+import { resolveImageUrl } from '../../utils/image';
 
 interface Props {
   src?: string | null;
@@ -18,7 +19,7 @@ export default function ItemImage({ src, alt, categorySlug, className, zoomable 
   if (src && !failed) {
     return (
       <img
-        src={src}
+        src={resolveImageUrl(src)}
         alt={alt}
         loading="lazy"
         onError={() => setFailed(true)}

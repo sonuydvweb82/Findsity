@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { cn, initials } from '../../utils/format';
+import { resolveImageUrl } from '../../utils/image';
 
 export function Avatar({ name, url, size = 40, className }: { name?: string | null; url?: string | null; size?: number; className?: string }) {
   const [imgFailed, setImgFailed] = useState(false);
   if (url && !imgFailed) {
     return (
       <img
-        src={url}
+        src={resolveImageUrl(url)}
         alt={name ?? 'avatar'}
         width={size}
         height={size}

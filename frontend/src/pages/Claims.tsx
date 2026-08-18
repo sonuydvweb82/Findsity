@@ -6,6 +6,7 @@ import type { ClaimSummary } from '../types';
 import { Badge, TypeBadge } from '../components/ui/Badge';
 import { Avatar, EmptyState, Skeleton } from '../components/ui/Avatar';
 import { timeAgo } from '../utils/format';
+import { resolveImageUrl } from '../utils/image';
 
 export default function Claims() {
   const [params] = useSearchParams();
@@ -78,7 +79,7 @@ export default function Claims() {
             {data.map((c) => (
               <Link key={c.id} to={`/claims/${c.id}`} className="flex items-center gap-4 p-4 transition hover:bg-slate-50 dark:hover:bg-slate-800/50">
                 {c.item_cover ? (
-                  <img src={c.item_cover} alt="" className="size-12 shrink-0 rounded-lg object-cover" />
+                  <img src={resolveImageUrl(c.item_cover)} alt="" className="size-12 shrink-0 rounded-lg object-cover" />
                 ) : (
                   <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-300 dark:bg-slate-800">
                     <FileText className="size-5" />
